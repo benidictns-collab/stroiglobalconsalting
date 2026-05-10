@@ -199,7 +199,7 @@ export default function Home() {
             {/* Logo */}
             <button onClick={() => scrollTo('hero')} className="flex items-center gap-2 group shrink-0">
               <div className="w-10 h-10 bg-gradient-to-br from-[#e8581a] to-[#f0a500] rounded-lg flex items-center justify-center font-heading text-xl text-white group-hover:scale-105 transition-transform">С</div>
-              <span className="font-heading text-lg sm:text-xl tracking-wide text-white">СГК</span>
+              <span className="font-heading text-sm sm:text-base lg:text-xl tracking-wide text-white">СТРОЙГЛОБАЛКОНСАЛТИНГ</span>
             </button>
 
             {/* Desktop Nav - visible on xl+ */}
@@ -479,9 +479,9 @@ export default function Home() {
               </div>
 
               {/* Infrastructure Image */}
-              <div className="relative rounded-2xl overflow-hidden border border-white/5">
-                <img src="/images/infrastructure.png" alt="Инфраструктура СГК" className="w-full h-48 object-cover opacity-60" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-transparent to-transparent" />
+              <div className="relative rounded-2xl overflow-hidden border border-white/5 group">
+                <img src="/images/infrastructure_hero.png" alt="Инфраструктура СГК" className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-[#0a0e1a]/30 to-transparent" />
                 <div className="absolute bottom-4 left-4">
                   <span className="text-sm text-slate-300">Собственная инфраструктура и склады</span>
                 </div>
@@ -816,7 +816,7 @@ export default function Home() {
             {/* Right - Visual */}
             <div className="space-y-6">
               <div className="relative rounded-2xl overflow-hidden border border-white/5 group">
-                <img src="/images/safety_hero.png" alt="Средства индивидуальной защиты" className="w-full h-72 sm:h-80 object-cover group-hover:scale-105 transition-transform duration-700" />
+                <img src="/images/safety_russian_hero.png" alt="Средства индивидуальной защиты" className="w-full h-72 sm:h-80 object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-[#0a0e1a]/40 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="flex items-center gap-2 text-white">
