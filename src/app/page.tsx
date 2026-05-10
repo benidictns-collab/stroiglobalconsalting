@@ -122,40 +122,44 @@ const equipmentTabs = [
     key: 'welding',
     label: 'Сварочное оборудование',
     icon: Flame,
+    hero: '/images/equipment_welding_hero.png',
     items: [
-      { img: '/images/equipment_welding.png', title: 'Сварочное оборудование', desc: 'Широкий парк сварочного оборудования для всех видов сварки' },
-      { img: '/images/auto_welding_tight.png', title: 'Автоматическая сварка в стеснённых условиях', desc: 'Специализированное оборудование для работы в ограниченном пространстве' },
-      { img: '/images/plasma_cutting.png', title: 'Плазменная резка', desc: 'Высокоточная плазменная резка труб и деталей' },
+      { title: 'Сварочное оборудование', desc: 'Широкий парк сварочного оборудования для всех видов сварки' },
+      { title: 'Автоматическая сварка в стеснённых условиях', desc: 'Специализированное оборудование для работы в ограниченном пространстве' },
+      { title: 'Плазменная резка', desc: 'Высокоточная плазменная резка труб и деталей' },
     ]
   },
   {
     key: 'labs',
     label: 'Лаборатории',
     icon: Microscope,
+    hero: '/images/equipment_labs_hero.png',
     items: [
-      { img: '/images/equipment_ndt.png', title: 'Лаборатория неразрушающего контроля', desc: 'Полный спектр методов НК: РК, УЗК, ВИК, ПВК, МПК' },
-      { img: '/images/equipment_mechanical.png', title: 'Механические испытания', desc: 'Разрывные и ударные машины, твёрдомеры' },
-      { img: '/images/digital_radiography.png', title: 'Цифровая радиография', desc: 'Современное цифровое радиографическое оборудование' },
-      { img: '/images/laser_control.png', title: 'Лазерный контроль', desc: 'Лазерные системы измерения и контроля геометрии' },
+      { title: 'Лаборатория неразрушающего контроля', desc: 'Полный спектр методов НК: РК, УЗК, ВИК, ПВК, МПК' },
+      { title: 'Механические испытания', desc: 'Разрывные и ударные машины, твёрдомеры' },
+      { title: 'Цифровая радиография', desc: 'Современное цифровое радиографическое оборудование' },
+      { title: 'Лазерный контроль', desc: 'Лазерные системы измерения и контроля геометрии' },
     ]
   },
   {
     key: 'ktp',
     label: 'Техника КТП',
     icon: Truck,
+    hero: '/images/equipment_ktp_hero.png',
     items: [
-      { img: '/images/equipment_ktp_vehicles.png', title: 'Транспортные средства КТП', desc: 'Мобильные лаборатории и транспорт для контроля' },
-      { img: '/images/equipment_ktp_welding.png', title: 'Сварочные машины КТП', desc: 'Передвижные сварочные установки' },
-      { img: '/images/ktp_flow.png', title: 'Технологический поток КТП', desc: 'Организация технологического процесса контроля' },
+      { title: 'Транспортные средства КТП', desc: 'Мобильные лаборатории и транспорт для контроля' },
+      { title: 'Сварочные машины КТП', desc: 'Передвижные сварочные установки' },
+      { title: 'Технологический поток КТП', desc: 'Организация технологического процесса контроля' },
     ]
   },
   {
     key: 'assembly',
     label: 'Цех сборки',
     icon: Factory,
+    hero: '/images/equipment_assembly_hero.png',
     items: [
-      { img: '/images/assembly_equipment.png', title: 'Сборочное оборудование', desc: 'Оборудование для сборки и монтажа конструкций' },
-      { img: '/images/pipe_shop.png', title: 'Цех трубных заготовок', desc: 'Производство трубных секций и заготовок' },
+      { title: 'Сборочное оборудование', desc: 'Оборудование для сборки и монтажа конструкций' },
+      { title: 'Цех трубных заготовок', desc: 'Производство трубных секций и заготовок' },
     ]
   },
 ]
@@ -549,24 +553,46 @@ export default function Home() {
           </div>
 
           {/* Tab Content */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {equipmentTabs.find(t => t.key === activeTab)?.items.map((item, i) => (
-              <div key={`${activeTab}-${i}`} className="group bg-[#0d1b3e]/60 border border-white/5 rounded-2xl overflow-hidden hover:border-[#e8581a]/30 transition-all duration-300">
-                <div className="relative h-52 overflow-hidden">
+          {(() => {
+            const activeEquipment = equipmentTabs.find(t => t.key === activeTab)
+            if (!activeEquipment) return null
+            return (
+              <div className="space-y-8">
+                {/* Hero Image */}
+                <div className="relative rounded-2xl overflow-hidden border border-white/10 group">
                   <img
-                    src={item.img}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src={activeEquipment.hero}
+                    alt={activeEquipment.label}
+                    className="w-full h-64 sm:h-80 lg:h-[420px] object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b3e] via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-[#0a0e1a]/40 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 rounded-lg bg-[#e8581a]/20 border border-[#e8581a]/40 flex items-center justify-center">
+                        <activeEquipment.icon size={20} className="text-[#e8581a]" />
+                      </div>
+                      <h3 className="font-heading text-2xl sm:text-3xl text-white tracking-wide">{activeEquipment.label}</h3>
+                    </div>
+                  </div>
                 </div>
-                <div className="p-5">
-                  <h4 className="font-heading text-lg text-white mb-2 tracking-wide">{item.title}</h4>
-                  <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
+
+                {/* Items Grid */}
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {activeEquipment.items.map((item, i) => (
+                    <div key={`${activeTab}-${i}`} className="group bg-[#0d1b3e]/60 border border-white/5 rounded-xl p-5 hover:border-[#e8581a]/30 transition-all duration-300 hover:bg-[#0d1b3e]/80">
+                      <div className="flex items-start gap-3">
+                        <div className="mt-1 w-2 h-2 rounded-full bg-[#e8581a] shrink-0 group-hover:scale-125 transition-transform" />
+                        <div>
+                          <h4 className="font-heading text-base text-white mb-1.5 tracking-wide">{item.title}</h4>
+                          <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
+            )
+          })()}
         </div>
       </Section>
 
