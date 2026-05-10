@@ -1,0 +1,27 @@
+# Timeweb Cloud конфигурация деплоя
+# Подробнее: https://timeweb.cloud/docs/
+
+# Тип приложения
+type: docker
+
+# Порт приложения
+port: 3000
+
+# Переменные окружения
+env:
+  NODE_ENV: production
+  PORT: "3000"
+  DATABASE_URL: "file:./db/custom.db"
+  NEXT_TELEMETRY_DISABLED: "1"
+
+# Команды для сборки (при Dockerless деплое)
+build:
+  command: npm run build
+
+# Команда запуска
+start:
+  command: npm run start
+
+# Ресурсы
+resources:
+  memory: 512

@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.gitignore
+*.md
+download/
+upload/
+examples/
+db/
+*.log
+.env
+.env.local
+.env*.local
+README.md
+worklog.md
+Caddyfile
+bun.lock
