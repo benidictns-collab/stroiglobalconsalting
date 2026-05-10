@@ -1,27 +1,35 @@
-# Timeweb Cloud конфигурация деплоя
-# Подробнее: https://timeweb.cloud/docs/
+# ────────────────────────────────────────────────────────
+# Timeweb Cloud — APP Platform конфигурация
+# https://timeweb.cloud/docs/app-platform/
+# ────────────────────────────────────────────────────────
 
-# Тип приложения
-type: docker
+# Идентификатор приложения
+app: sgk-website
 
-# Порт приложения
+# Среда выполнения
+runtime: docker
+
+# Порт, который слушает приложение
 port: 3000
 
-# Переменные окружения
+# Команды сборки и запуска (для Dockerless-режима, если Dockerfile не найден)
+build:
+  - npm install --legacy-peer-deps
+  - npx prisma generate
+  - npm run build
+
+start: npm run start
+
+# Переменные окружения (переопределяются в панели Timeweb)
 env:
   NODE_ENV: production
   PORT: "3000"
+  HOSTNAME: "0.0.0.0"
   DATABASE_URL: "file:./db/custom.db"
   NEXT_TELEMETRY_DISABLED: "1"
 
-# Команды для сборки (при Dockerless деплое)
-build:
-  command: npm run build
+# Ресурсы (минимальная конфигурация)
+plan: small
 
-# Команда запуска
-start:
-  command: npm run start
-
-# Ресурсы
-resources:
-  memory: 512
+# Автодеплой при пуше в main
+branch: main

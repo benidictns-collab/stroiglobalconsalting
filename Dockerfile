@@ -1,12 +1,25 @@
-# ─── Stage 1: Dependencies ───
+# ──────────────────────────────────────────────
+# Dockerfile для APP Platform Timeweb Cloud
+# Next.js 16 standalone + Prisma + SQLite
+# ──────────────────────────────────────────────
+
+# ─── Stage 1: Зависимости ───
 FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
-COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev
+COPY package.json package-lock.json* bun.lock* ./
 
-# ─── Stage 2: Build ───
+# Устанавливаем зависимости (prod + dev для сборки)
+RUN if [ -f bun.lock ]; then \
+      npm install --legacy-peer-deps; \
+    elif [ -f package-lock.json ]; then \
+      npm ci --legacy-peer-deps; \
+    else \
+      npm install --legacy-peer-deps; \
+    fi
+
+# ─── Stage 2: Сборка ───
 FROM node:20-alpine AS builder
 WORKDIR /app
 
@@ -16,11 +29,20 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-# Generate Prisma client
+# Генерируем Prisma клиент
 RUN npx prisma generate
 
-# Build Next.js (standalone output)
-RUN npm run build
+# Собираем Next.js
+RUN npx next build
+
+# Копируем статику и public в standalone
+RUN cp -r .next/static .next/standalone/.next/ && \
+    cp -r public .next/standalone/ && \
+    cp -r prisma .next/standalone/prisma && \
+    cp -r db .next/standalone/db && \
+    mkdir -p .next/standalone/node_modules/.prisma && \
+    cp -r node_modules/.prisma .next/standalone/node_modules/.prisma && \
+    cp -r node_modules/@prisma .next/standalone/node_modules/@prisma
 
 # ─── Stage 3: Production ───
 FROM node:20-alpine AS runner
@@ -31,24 +53,22 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Минимальные пакеты для SQLite
+RUN apk add --no-cache openssl
 
-# Copy standalone server
+# Создаём непривилегированного пользователя
+RUN addgroup --system --gid 1001 appgroup && \
+    adduser --system --uid 1001 appuser
+
+# Копируем только standalone-бандл
 COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
 
-# Copy Prisma schema and DB for runtime
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/db ./db
+# Права на запись для SQLite
+RUN chown -R appuser:appgroup /app
 
-# Copy node_modules with Prisma client
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-
-USER nextjs
+USER appuser
 
 EXPOSE 3000
 
+# Timeweb APP Platform ожидает сервер на 0.0.0.0:3000
 CMD ["node", "server.js"]
