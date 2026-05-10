@@ -3,33 +3,21 @@
 # https://timeweb.cloud/docs/app-platform/
 # ────────────────────────────────────────────────────────
 
-# Идентификатор приложения
 app: sgk-website
-
-# Среда выполнения
 runtime: docker
-
-# Порт, который слушает приложение
 port: 3000
 
-# Команды сборки и запуска (для Dockerless-режима, если Dockerfile не найден)
 build:
   - npm install --legacy-peer-deps
-  - npx prisma generate
   - npm run build
 
 start: npm run start
 
-# Переменные окружения (переопределяются в панели Timeweb)
 env:
   NODE_ENV: production
   PORT: "3000"
   HOSTNAME: "0.0.0.0"
-  DATABASE_URL: "file:./db/custom.db"
   NEXT_TELEMETRY_DISABLED: "1"
 
-# Ресурсы (минимальная конфигурация)
 plan: small
-
-# Автодеплой при пуше в main
 branch: main

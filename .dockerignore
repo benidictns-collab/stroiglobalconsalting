@@ -2,14 +2,9 @@ node_modules
 .next
 .git
 .gitignore
-download
-upload
-examples
 *.md
 *.log
 .env
 .env.local
 .env*.local
 Caddyfile
-worklog.md
-skills
