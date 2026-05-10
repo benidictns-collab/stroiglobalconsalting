@@ -196,28 +196,29 @@ export default function Home() {
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#0a0e1a]/90 backdrop-blur-xl shadow-lg shadow-black/20 border-b border-white/5' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
-            <button onClick={() => scrollTo('hero')} className="flex items-center gap-2 group">
+            {/* Logo */}
+            <button onClick={() => scrollTo('hero')} className="flex items-center gap-2 group shrink-0">
               <div className="w-10 h-10 bg-gradient-to-br from-[#e8581a] to-[#f0a500] rounded-lg flex items-center justify-center font-heading text-xl text-white group-hover:scale-105 transition-transform">С</div>
-              <span className="font-heading text-xl tracking-wide text-white hidden sm:block">СТРОЙГЛОБАЛКОНСАЛТИНГ</span>
+              <span className="font-heading text-lg sm:text-xl tracking-wide text-white">СГК</span>
             </button>
 
-            {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-1">
+            {/* Desktop Nav - visible on xl+ */}
+            <div className="hidden xl:flex items-center gap-0.5">
               {navLinks.map(link => (
                 <button
                   key={link.id}
                   onClick={() => scrollTo(link.id)}
-                  className="px-3 py-2 text-sm text-slate-400 hover:text-[#e8581a] transition-colors rounded-md hover:bg-white/5"
+                  className="px-2.5 py-2 text-[13px] text-slate-400 hover:text-[#e8581a] transition-colors rounded-md hover:bg-white/5 whitespace-nowrap"
                 >
                   {link.label}
                 </button>
               ))}
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - visible below xl */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-slate-400 hover:text-white"
+              className="xl:hidden p-2 text-slate-400 hover:text-white transition-colors"
               aria-label="Меню навигации"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -225,22 +226,24 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-[#0a0e1a]/98 backdrop-blur-xl border-t border-white/5 max-h-[80vh] overflow-y-auto">
-            <div className="px-4 py-3 space-y-1">
-              {navLinks.map(link => (
-                <button
-                  key={link.id}
-                  onClick={() => scrollTo(link.id)}
-                  className="block w-full text-left px-4 py-3 text-slate-300 hover:text-[#e8581a] hover:bg-white/5 rounded-lg transition-colors"
-                >
-                  {link.label}
-                </button>
-              ))}
+        {/* Mobile Menu - slide-down */}
+        <div className={`xl:hidden transition-all duration-300 overflow-hidden ${mobileMenuOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className="bg-[#0a0e1a]/98 backdrop-blur-xl border-t border-white/5">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {navLinks.map(link => (
+                  <button
+                    key={link.id}
+                    onClick={() => { scrollTo(link.id); setMobileMenuOpen(false) }}
+                    className="text-left px-4 py-3 text-slate-300 hover:text-[#e8581a] hover:bg-white/5 rounded-lg transition-colors text-sm"
+                  >
+                    {link.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        )}
+        </div>
       </nav>
 
       {/* ═══ 1. HERO SECTION ═══ */}
@@ -631,54 +634,51 @@ export default function Home() {
             <h2 className="font-heading text-4xl sm:text-5xl text-white mt-3">Наши преимущества</h2>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Featured Card - Champions */}
-            <div className="lg:col-span-2 bg-gradient-to-br from-[#0d1b3e]/80 to-[#0a0e1a] border border-[#f0a500]/20 rounded-2xl overflow-hidden hover:border-[#f0a500]/40 transition-all duration-300">
-              <div className="flex flex-col sm:flex-row gap-6 p-6 lg:p-8">
-                <div className="shrink-0 sm:w-64">
-                  <img src="/images/champions.png" alt="Чемпионы мира по сварке" className="w-full h-56 sm:h-full object-cover rounded-xl opacity-80" />
+          {/* Hero Banner */}
+          <div className="relative rounded-2xl overflow-hidden border border-[#f0a500]/20 mb-8 group">
+            <img src="/images/advantages_hero.png" alt="Наши преимущества" className="w-full h-64 sm:h-80 lg:h-[400px] object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-[#0a0e1a]/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+              <div className="flex items-center gap-3 mb-3">
+                <Award size={28} className="text-[#f0a500]" />
+                <span className="text-[#f0a500] font-heading text-2xl tracking-wider">ЧЕМПИОНЫ МИРА</span>
+              </div>
+              <h3 className="font-heading text-3xl sm:text-4xl text-white mb-3">2× победители Arc Cup</h3>
+              <div className="flex gap-4">
+                <div className="bg-[#f0a500]/15 border border-[#f0a500]/30 rounded-xl px-5 py-3 text-center backdrop-blur-sm">
+                  <div className="font-heading text-3xl text-[#f0a500]">2017</div>
+                  <div className="text-xs text-slate-300 mt-1">Пекин, Китай</div>
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Award size={24} className="text-[#f0a500]" />
-                    <span className="text-[#f0a500] font-heading text-xl tracking-wider">ЧЕМПИОНЫ МИРА</span>
-                  </div>
-                  <h3 className="font-heading text-2xl sm:text-3xl text-white mb-4">2× победители Arc Cup</h3>
-                  <p className="text-slate-400 leading-relaxed mb-6">
-                    Сварщики ООО «СГК» дважды становились чемпионами мира по сварке на престижном международном
-                    конкурсе Arc Cup, подтверждая высочайший уровень мастерства и квалификации.
-                  </p>
-                  <div className="flex gap-4">
-                    <div className="bg-[#f0a500]/10 border border-[#f0a500]/30 rounded-xl px-5 py-3 text-center">
-                      <div className="font-heading text-3xl text-[#f0a500]">2017</div>
-                      <div className="text-xs text-slate-400 mt-1">Пекин, Китай</div>
-                    </div>
-                    <div className="bg-[#f0a500]/10 border border-[#f0a500]/30 rounded-xl px-5 py-3 text-center">
-                      <div className="font-heading text-3xl text-[#f0a500]">2019</div>
-                      <div className="text-xs text-slate-400 mt-1">Чехия</div>
-                    </div>
-                  </div>
+                <div className="bg-[#f0a500]/15 border border-[#f0a500]/30 rounded-xl px-5 py-3 text-center backdrop-blur-sm">
+                  <div className="font-heading text-3xl text-[#f0a500]">2019</div>
+                  <div className="text-xs text-slate-300 mt-1">Чехия</div>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Right Column Cards */}
-            <div className="space-y-6">
-              <div className="bg-[#0d1b3e]/60 border border-white/5 rounded-2xl p-6 hover:border-[#e8581a]/30 transition-colors">
-                <HardHat size={28} className="text-[#e8581a] mb-3" />
-                <h4 className="font-heading text-xl text-white mb-2 tracking-wide">Полный цикл EPC</h4>
-                <p className="text-sm text-slate-400 leading-relaxed">Проектирование, закупки, строительство и пуско-наладка — единый подрядчик</p>
+          {/* Advantages Grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="group bg-[#0d1b3e]/60 border border-white/5 rounded-2xl p-6 hover:border-[#e8581a]/30 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#e8581a]/10 border border-[#e8581a]/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#e8581a]/20 transition-colors">
+                <HardHat size={24} className="text-[#e8581a]" />
               </div>
-              <div className="bg-[#0d1b3e]/60 border border-white/5 rounded-2xl p-6 hover:border-[#e8581a]/30 transition-colors">
-                <Settings size={28} className="text-[#e8581a] mb-3" />
-                <h4 className="font-heading text-xl text-white mb-2 tracking-wide">Собственные лаборатории</h4>
-                <p className="text-sm text-slate-400 leading-relaxed">Аккредитованные лаборатории НК, механических испытаний и строительного контроля</p>
+              <h4 className="font-heading text-xl text-white mb-2 tracking-wide">Полный цикл EPC</h4>
+              <p className="text-sm text-slate-400 leading-relaxed">Проектирование, закупки, строительство и пуско-наладка — единый подрядчик</p>
+            </div>
+            <div className="group bg-[#0d1b3e]/60 border border-white/5 rounded-2xl p-6 hover:border-[#e8581a]/30 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#e8581a]/10 border border-[#e8581a]/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#e8581a]/20 transition-colors">
+                <Settings size={24} className="text-[#e8581a]" />
               </div>
-              <div className="bg-[#0d1b3e]/60 border border-white/5 rounded-2xl p-6 hover:border-[#e8581a]/30 transition-colors">
-                <Cpu size={28} className="text-[#e8581a] mb-3" />
-                <h4 className="font-heading text-xl text-white mb-2 tracking-wide">Цифровые технологии</h4>
-                <p className="text-sm text-slate-400 leading-relaxed">Собственные программные решения для управления проектами и контроля качества</p>
+              <h4 className="font-heading text-xl text-white mb-2 tracking-wide">Собственные лаборатории</h4>
+              <p className="text-sm text-slate-400 leading-relaxed">Аккредитованные лаборатории НК, механических испытаний и строительного контроля</p>
+            </div>
+            <div className="group bg-[#0d1b3e]/60 border border-white/5 rounded-2xl p-6 hover:border-[#e8581a]/30 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#e8581a]/10 border border-[#e8581a]/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#e8581a]/20 transition-colors">
+                <Cpu size={24} className="text-[#e8581a]" />
               </div>
+              <h4 className="font-heading text-xl text-white mb-2 tracking-wide">Цифровые технологии</h4>
+              <p className="text-sm text-slate-400 leading-relaxed">Собственные программные решения для управления проектами и контроля качества</p>
             </div>
           </div>
         </div>
@@ -716,50 +716,55 @@ export default function Home() {
             <p className="text-slate-400 mt-3 max-w-2xl mx-auto">Собственные программные решения для повышения эффективности управления проектами</p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-6">
+          {/* Hero Banner */}
+          <div className="relative rounded-2xl overflow-hidden border border-[#e8581a]/20 mb-8 group">
+            <img src="/images/digital_hero.png" alt="Цифровые технологии" className="w-full h-64 sm:h-80 lg:h-[400px] object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-[#0a0e1a]/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-[#e8581a]/20 border border-[#e8581a]/40 flex items-center justify-center backdrop-blur-sm">
+                  <Cpu size={20} className="text-[#e8581a]" />
+                </div>
+                <span className="text-[#e8581a] font-heading text-xl tracking-wider">СОБСТВЕННЫЕ РАЗРАБОТКИ</span>
+              </div>
+              <p className="text-slate-300 text-sm sm:text-base max-w-2xl">Цифровые решения для управления проектами, контроля качества и автоматизации процессов</p>
+            </div>
+          </div>
+
+          {/* Digital Products Grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               {
-                img: '/images/software_navigator.png',
                 title: 'Pipeline Navigator',
                 desc: 'Система навигации и управления линейными объектами трубопроводного транспорта в режиме реального времени.',
                 tags: ['GPS-мониторинг', '3D-визуализация', 'Реальное время'],
                 icon: Monitor,
               },
               {
-                img: '/images/weldbook.png',
                 title: 'WeldBook',
                 desc: 'Электронный журнал сварочных работ с автоматическим формированием документации и контролем качества.',
                 tags: ['Электронный документооборот', 'Контроль качества', 'Автоматизация'],
                 icon: Laptop,
               },
               {
-                img: '/images/digital_radiography.png',
                 title: 'Цифровая радиография',
                 desc: 'Система цифровой радиографии для неразрушающего контроля сварных соединений с автоматической расшифровкой.',
                 tags: ['Неразрушающий контроль', 'Автоматизация', 'Цифровые данные'],
                 icon: ScanLine,
               },
             ].map((d, i) => (
-              <div key={i} className="group bg-[#0d1b3e]/60 border border-white/5 rounded-2xl overflow-hidden hover:border-[#e8581a]/30 transition-all duration-300">
-                <div className="relative h-52 overflow-hidden">
-                  <img src={d.img} alt={d.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b3e] via-[#0d1b3e]/40 to-transparent" />
-                  <div className="absolute top-4 left-4">
-                    <div className="w-10 h-10 bg-[#e8581a] rounded-lg flex items-center justify-center">
-                      <d.icon size={20} className="text-white" />
-                    </div>
-                  </div>
+              <div key={i} className="group bg-[#0d1b3e]/60 border border-white/5 rounded-2xl p-6 hover:border-[#e8581a]/30 transition-all duration-300">
+                <div className="w-12 h-12 bg-[#e8581a]/10 border border-[#e8581a]/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#e8581a]/20 transition-colors">
+                  <d.icon size={24} className="text-[#e8581a]" />
                 </div>
-                <div className="p-5">
-                  <h4 className="font-heading text-xl text-white mb-2 tracking-wide">{d.title}</h4>
-                  <p className="text-sm text-slate-400 leading-relaxed mb-4">{d.desc}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {d.tags.map((tag, j) => (
-                      <span key={j} className="px-2.5 py-1 bg-[#e8581a]/10 border border-[#e8581a]/20 rounded-md text-xs text-[#e8581a]">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                <h4 className="font-heading text-xl text-white mb-2 tracking-wide">{d.title}</h4>
+                <p className="text-sm text-slate-400 leading-relaxed mb-4">{d.desc}</p>
+                <div className="flex flex-wrap gap-2">
+                  {d.tags.map((tag, j) => (
+                    <span key={j} className="px-2.5 py-1 bg-[#e8581a]/10 border border-[#e8581a]/20 rounded-md text-xs text-[#e8581a]">
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             ))}
@@ -810,9 +815,9 @@ export default function Home() {
 
             {/* Right - Visual */}
             <div className="space-y-6">
-              <div className="relative rounded-2xl overflow-hidden border border-white/5">
-                <img src="/images/safety_ppe.png" alt="Средства индивидуальной защиты" className="w-full h-72 object-cover opacity-70" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-transparent to-transparent" />
+              <div className="relative rounded-2xl overflow-hidden border border-white/5 group">
+                <img src="/images/safety_hero.png" alt="Средства индивидуальной защиты" className="w-full h-72 sm:h-80 object-cover group-hover:scale-105 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-[#0a0e1a]/40 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="flex items-center gap-2 text-white">
                     <ShieldCheck size={18} className="text-[#e8581a]" />
